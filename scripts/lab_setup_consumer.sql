@@ -1,17 +1,32 @@
+use role accountadmin;
+
+-- STEP ONE
+create warehouse READER_WH 
+warehouse_size = 'x-small', auto_suspend = 60;
+
+grant usage,operate on warehouse READER_WH to role sysadmin;
+
+--STEP TWO
+-- use Snowsight Provider Studio to accept the application package share and any other dat sahres provided from parent org
+-- data products --> private sharing
+
+--STEP THREE
 --sepcial previlege for snowflake databse
 USE ROLE ACCOUNTADMIN;
 
+--see the applciation in your account
 show applications;
-GRANT IMPORTED PRIVILEGES ON DATABASE SNOWFLAKE TO application SAMPLE_NATIVE_APP;
+
+--grant privileges to the applciation
+GRANT IMPORTED PRIVILEGES ON DATABASE SNOWFLAKE TO application SAMPLE_NATIVE_APPP;
+
 --lets give application previlege on some other databses
+GRANT IMPORTED PRIVILEGES ON DATABASE SAMPLE_CRM_DATA TO application SAMPLE_NATIVE_APPP;
 
-GRANT IMPORTED PRIVILEGES ON DATABASE MOVIES TO application SAMPLE_NATIVE_APP;
+--the sample app also needs permssison ona warehouse.
+grant usage,operate on warehouse READER_WH to application SAMPLE_NATIVE_APPP;
 
-GRANT IMPORTED PRIVILEGES ON schema MOVIES.DATA TO application SAMPLE_NATIVE_APP;
--- grant all on database ARATH_DB to application sample_native_app_instance;
--- grant all on schema ARATH_DB.ADVERTISING to application sample_native_app_instance;
--- grant select on all tables in schema ARATH_DB.ADVERTISING to application sample_native_app_instance;
-
-grant usage,operate on warehouse COMPUTE_WH to application SAMPLE_NATIVE_APP;
-
-grant usage,operate on warehouse COMPUTE_WH to role sysadmin;
+-- STEP FOUR
+-- grant previleges to other users/roles
+-- https://other-docs.snowflake.com/en/native-apps/consumer-managing-applications#granting-application-roles-to-account-roles
+GRANT APPLICATION ROLE SAMPLE_NATIVE_APPP.app_public TO ROLE public;
