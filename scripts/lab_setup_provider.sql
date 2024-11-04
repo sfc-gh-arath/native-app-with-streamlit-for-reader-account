@@ -14,23 +14,21 @@ grant create application on account to role provider_role with grant option;
 use role provider_role;
 create database if not exists sample_native_app;
 create schema if not exists sample_native_app.napp;
-create stage if not exists sample_native_app.napp.app_stage;
-create warehouse if not exists wh_nap with warehouse_size='xsmall';
 
 -- step THREE
--- Create Application Package 
-use role provider_role;
-create application package sample_native_app_pkg;
-
--- step FOUR
+create stage if not exists sample_native_app.napp.app_stage;
+create warehouse if not exists wh_nap with warehouse_size='xsmall';
 -- Use Snowsight to Upload Native App Code
 -- Upload the code from the App and src files into the sample_native_app.napp.app_stage
 
--- setp FIVE
+-- setp FOUR
+-- Create Application Package 
+use role provider_role;
+create application package sample_native_app_pkg;
 -- set the files for the applciation Package
 alter application package sample_native_app_pkg add version v1 using @sample_native_app.napp.app_stage;
 
--- step SIX
+-- step FIVE
 -- Create a Consumer in the provider side to test the app before we package it and share it
 -- and Grant Consumer Role Privileges
 -- Create test_consumer_role role and Grant Privileges
@@ -44,23 +42,33 @@ grant install, develop on application package sample_native_app_pkg to role test
 use role test_consumer_role;
 create warehouse if not exists wh_test_consumer_role with warehouse_size='medium';
 
--- Step SEVEN
+-- Step SIX
 -- Install App as the Consumer
 use role test_consumer_role;
 create application sample_native_app_instance from application package sample_native_app_pkg using version v1;
 
--- Step EIGHT
+-- Step SEVEN
 -- grant teh applciation access to dabases taht need to be used
 -- in this exmaple we are giving the applciation ACESS to a database MOVIEs, schema DATA
-grant all on database movies to application sample_native_app_instance;
-grant all on schema movies.data to application sample_native_app_instance;
-grant all on table movies.data.movies_raw to application sample_native_app_instance;
+grant all on database DEMO_DB to application sample_native_app_instance;
+grant all on schema DEMO_DB.CRM to application sample_native_app_instance;
+grant select on all tables in schema DEMO_DB.CRM to application sample_native_app_instance;
 --grant a WEAREHOUSE to be used by the app
 grant usage on warehouse wh_test_consumer_role to application sample_native_app_instance;
 
+--sepcial previlege for snwoflake databse
+USE ROLE ACCOUNTADMIN;
+GRANT IMPORTED PRIVILEGES ON DATABASE SNOWFLAKE TO application sample_native_app_instance;
+
 -- Step EIGHT
 -- run the app through Snowsight
+-- list available applications
+show applications;
 
+-- Step NINE
+-- set release version
+use role test_consumer_role;
+create application sample_native_app_instance from application package sample_native_app_pkg using version v1;
 
 -- CLEANUP
 --clean up consumer objects
