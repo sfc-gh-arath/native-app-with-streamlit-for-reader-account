@@ -67,8 +67,13 @@ show applications;
 
 -- Step NINE
 -- set release version
-use role test_consumer_role;
-create application sample_native_app_instance from application package sample_native_app_pkg using version v1;
+--provider settings to share the app
+use role provider_role;
+show application packages;
+ALTER APPLICATION PACKAGE SAMPLE_NATIVE_APP_PKG SET DEFAULT RELEASE DIRECTIVE 
+  VERSION = v1
+  PATCH = 0;
+  
 
 -- CLEANUP
 --clean up consumer objects
