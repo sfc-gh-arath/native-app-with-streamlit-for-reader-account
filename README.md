@@ -1,8 +1,7 @@
-# sfguide-build-chatbot-with-snowflake-native-app-snowflake-cortex
+# native-app-with-streamlit-for-reader-account
 
 ## Overview
-In this guide you will learn how to incorporate the Snowflake Cortex Suite into a Native App allowing you to deploy a variety of new capabilities to Native App consumers.
-
+This repo provides required scripts to setup a Snowflake native app with a Streamlit front end that can be shared with a Snowflake Reader Account
 ## Step-By-Step Guide
 
-For prerequisites, environment setup, step-by-step guide and instructions, please refer to the [QuickStart Guide](https://quickstarts.snowflake.com/guide/build-a-cinebot-with-snowflake-native-apps-and-cortex/index.html).
+Please refer to the [Medium Blog](https://medium.com/p/bf18827d930f/edit).
