@@ -6,8 +6,8 @@ create role if not exists provider_role;
 grant role provider_role to role accountadmin;
 grant create warehouse on account to role provider_role;
 grant create database on account to role provider_role;
-grant create application package on account to role provider_role;
 grant create application on account to role provider_role with grant option;
+grant create application package on account to role provider_role;
 
 -- step TWO
 -- Create sample_native_app Database to Store Application Files 
