@@ -7,7 +7,7 @@ warehouse_size = 'x-small', auto_suspend = 60;
 grant usage,operate on warehouse READER_WH to role sysadmin;
 
 --STEP TWO
--- use Snowsight Provider Studio to accept the application package share and any other dat sahres provided from parent org
+-- use Snowsight Provider Studio to accept the application package share and any other data shares provided from parent org
 -- data products --> private sharing
 
 --STEP THREE
@@ -17,10 +17,10 @@ USE ROLE ACCOUNTADMIN;
 --see the applciation in your account
 show applications;
 
---grant privileges to the applciation
+--grant privileges to the application
 GRANT IMPORTED PRIVILEGES ON DATABASE SNOWFLAKE TO application SAMPLE_NATIVE_APPP;
 
---lets give application previlege on some other databses
+--lets give application previlege on some other databases
 GRANT IMPORTED PRIVILEGES ON DATABASE SAMPLE_CRM_DATA TO application SAMPLE_NATIVE_APPP;
 
 --the sample app also needs permssison ona warehouse.
