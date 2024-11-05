@@ -48,15 +48,15 @@ use role test_consumer_role;
 create application sample_native_app_instance from application package sample_native_app_pkg using version v1;
 
 -- Step SEVEN
--- grant teh applciation access to dabases taht need to be used
--- in this exmaple we are giving the applciation ACESS to a database MOVIEs, schema DATA
+-- grant the applciation access to databases that need to be used
+-- in this exmaple we are giving the application ACESS to a database DEMO_DB and schema CRM
 grant all on database DEMO_DB to application sample_native_app_instance;
 grant all on schema DEMO_DB.CRM to application sample_native_app_instance;
 grant select on all tables in schema DEMO_DB.CRM to application sample_native_app_instance;
 --grant a WEAREHOUSE to be used by the app
 grant usage on warehouse wh_test_consumer_role to application sample_native_app_instance;
 
---sepcial previlege for snwoflake databse
+--special previlege for snowflake database
 USE ROLE ACCOUNTADMIN;
 GRANT IMPORTED PRIVILEGES ON DATABASE SNOWFLAKE TO application sample_native_app_instance;
 
@@ -67,7 +67,7 @@ show applications;
 
 -- Step NINE
 -- set release version
---provider settings to share the app
+-- provider settings to share the app
 use role provider_role;
 show application packages;
 ALTER APPLICATION PACKAGE SAMPLE_NATIVE_APP_PKG SET DEFAULT RELEASE DIRECTIVE 
@@ -76,18 +76,18 @@ ALTER APPLICATION PACKAGE SAMPLE_NATIVE_APP_PKG SET DEFAULT RELEASE DIRECTIVE
   
 
 -- CLEANUP
---clean up consumer objects
+-- clean up consumer objects
 use role test_consumer_role;
 drop application sample_native_app_instance cascade;
 drop warehouse wh_test_consumer_role;
 
---clean up provider objects
+-- clean up provider objects
 use role provider_role;
 drop application package sample_native_app_pkg;
 drop database sample_native_app;
 drop warehouse wh_nap;
 
---clean up prep objects
+-- clean up prep objects
 use role accountadmin;
 drop role provider_role;
 drop role test_consumer_role;
